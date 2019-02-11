@@ -1,0 +1,49 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    margin-top: 0;
+    min-height: 100%;
+}
+.content {
+    margin: 10px calc(16px + 3vw);
+}
+
+.field-validation-error {
+    color: red;
+    font-weight: bold;
+}
+
+#messageSubmit {
+    margin: 0 10px;
+}
+.text-danger {
+    color: red;
+}
+.reviews {
+    max-height: 75vh;
+}
+footer {
+    padding: 0 1rem;
+}
+.review-recent-submit {
+    animation: 0.5s ease-in-out review-posted;
+}
+@keyframes review-posted {
+    0% {
+        background-color: inherit;
+    }
+    50% {
+        background-color: lightgreen;
+    }
+    100% {
+        background-color: inherit;
+    }
+}

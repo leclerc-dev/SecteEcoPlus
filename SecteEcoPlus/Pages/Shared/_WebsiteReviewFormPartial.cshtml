@@ -1,0 +1,42 @@
+﻿@model MessageRequestViewModel
+@inject UserManager<SecteUser> UserManager
+@inject SignInManager<SecteUser> SignInManager
+@{
+    if (Model is null)
+    {
+        ViewBag.Model = new Message();
+    }
+    var isSignedIn = SignInManager.IsSignedIn(User);
+    var authorName = isSignedIn ? User.Identity.Name : "Anonyme";
+    Model.IsAnonymous = !isSignedIn;
+}
+<script>
+    var authorName = '@authorName';
+    success = function () {
+        $('#contentMessageText').val('');
+    };
+</script>
+<span class="h3 my-0">Écrire une suggestion</span>
+<form method="post" data-ajax="true" data-ajax-method="post" data-ajax-update="#messagesContainer" data-ajax-url="@Url.Action("Submit", "Review")" data-ajax-mode="before" data-ajax-complete="success">
+    <div class="form-group">
+        <label>Auteur</label>
+        <input type="text" class="form-control" placeholder="Edouard Leclerc" id="authorInput" readonly value="@authorName" />
+        <label>
+            <input type="checkbox" asp-for="IsAnonymous" id="anonymous" disabled="@(isSignedIn ? null : "disabled")"/>
+            @Html.DisplayNameFor(m => m.IsAnonymous)
+        </label>
+        <div class="form-group">
+            <label asp-for="Content"></label>
+            <textarea asp-for="Content" id="contentMessageText" class="form-control"></textarea>
+            <span asp-validation-for="Content"></span>
+        </div>
+        <button type="submit" class="btn btn-success">Envoyer</button>
+    </div>
+</form>
+<script>
+    $('#anonymous').change(function() {
+        var input = $('#authorInput');
+        this.checked ? input.val('Anonyme') : input.val(authorName);
+    });
+</script>
+@* VIVE ECO+ !!!*@

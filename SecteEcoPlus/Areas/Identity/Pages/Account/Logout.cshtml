@@ -1,0 +1,11 @@
+﻿@page "{returnUrl?}"
+@model LogoutModel
+@{
+    ViewData["Title"] = "Se déconnecter";
+    ViewBag.IsDisconnecting = true;
+}
+
+<header>
+    <h1>@ViewData["Title"]</h1>
+    <p>Vous vous êtes déconnecté avec succès. A bientôt dans la SECTE !</p>
+</header>

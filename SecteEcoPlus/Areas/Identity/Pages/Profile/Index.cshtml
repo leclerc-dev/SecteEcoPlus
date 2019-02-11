@@ -1,0 +1,16 @@
+﻿@page "{id?}"
+@model SecteEcoPlus.Areas.Identity.Pages.Profile.IndexModel
+@{
+    ViewBag.DisplayName = Model.Username;
+    ViewBag.Title = $"Profil de {Model.Username} : Vue d'ensemble";
+}
+<h2>Derniers messages de @Model.Username</h2>
+<div class="overflow-auto h-100" id="messagesContainer">
+    @foreach (var message in Model.LastMessages)
+    {
+    <partial name="_ReviewPartial" model="message" />
+    }
+</div>
+@section Scripts {
+    <partial name="_ReviewScriptsPartial" />
+}

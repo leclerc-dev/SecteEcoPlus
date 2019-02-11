@@ -1,0 +1,15 @@
+﻿<script>
+    $(document).ready(function () {
+        $(document).on('click', '[data-delete-request-url]', function () {
+            var url = $(this).attr('data-delete-request-url');
+            var object = $(this);
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (code, s) {
+                    object.closest('[data-review]').remove();
+                }
+            });
+        });
+    });
+</script>

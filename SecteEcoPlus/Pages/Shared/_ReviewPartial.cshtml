@@ -1,0 +1,27 @@
+﻿@model SecteEcoPlus.Models.Message
+@inject SecteUserManager UserManager
+@inject SignInManager<SecteUser> SignInManager
+@{
+    ViewBag.UseReviewScripts = true;
+}
+<div class="card m-2 @(ViewBag.IsRecent ?? false ? "review-recent-submit" : "")" data-review>
+    <div class="card-body">
+        <span>
+            @{ var text = Model.Author?.GetDisplayName(UserManager) ?? "Anonyme"; }
+            @if (Model.Author?.SecteUserId != null)
+            {
+                <a asp-area="Identity" asp-page="/Profile/Index" asp-route-id="@Model.Author.SecteUserId"><b>@text</b></a>
+            }
+            else
+            {
+                <b>@text</b>
+            }
+            a dit le @Html.DisplayFor(m => m.PublishDate) :
+        </span>
+        <p>@Html.DisplayFor(m => m.Content)</p>
+        @if (SignInManager.IsSignedIn(User) && await UserManager.GetPublicProfileIdAsync(User) == Model.AuthorId)
+        {
+            <a href="#" data-delete-request-url="@Url.Action("Delete", "Review", new {id = Model.MessageId})" class="btn btn-danger btn-sm">Supprimer</a>
+        }
+    </div>
+</div>

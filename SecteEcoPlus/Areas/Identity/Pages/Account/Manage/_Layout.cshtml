@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "../../Pages/Shared/_Layout";
+}
+
+<h1>Gestion du compte</h1>
+
+<div>
+    <h4>Paramètres du compte</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <partial name="_ManageNav" />
+        </div>
+        <div class="col-md-9">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
