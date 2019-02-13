@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190213155637_AddedId.cs" />
+    <Compile Remove="Migrations\20190213155637_AddedId.Designer.cs" />
+    <Compile Remove="Migrations\20190213170806_Required.cs" />
+    <Compile Remove="Migrations\20190213170806_Required.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />

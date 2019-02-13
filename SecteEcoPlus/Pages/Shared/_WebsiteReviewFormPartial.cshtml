@@ -1,5 +1,5 @@
 ﻿@model MessageRequestViewModel
-@inject UserManager<SecteUser> UserManager
+@inject SecteUserManager UserManager
 @inject SignInManager<SecteUser> SignInManager
 @{
     if (Model is null)
@@ -7,7 +7,7 @@
         ViewBag.Model = new Message();
     }
     var isSignedIn = SignInManager.IsSignedIn(User);
-    var authorName = isSignedIn ? User.Identity.Name : "Anonyme";
+    var authorName = isSignedIn ? await UserManager.GetDisplayNameFromClaimAsync(User) ?? User.Identity.Name : "Anonyme";
     Model.IsAnonymous = !isSignedIn;
 }
 <script>

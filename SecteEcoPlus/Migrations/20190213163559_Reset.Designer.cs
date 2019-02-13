@@ -10,8 +10,8 @@ using SecteEcoPlus.Models;
 namespace SecteEcoPlus.Migrations
 {
     [DbContext(typeof(WebsiteContext))]
-    [Migration("20190208212232_Restart")]
-    partial class Restart
+    [Migration("20190213163559_Reset")]
+    partial class Reset
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -143,15 +143,9 @@ namespace SecteEcoPlus.Migrations
 
                     b.Property<string>("DisplayName");
 
-                    b.Property<string>("SecteUserId");
-
                     b.HasKey("PublicProfileId");
 
-                    b.HasIndex("SecteUserId")
-                        .IsUnique()
-                        .HasFilter("[SecteUserId] IS NOT NULL");
-
-                    b.ToTable("PublicProfile");
+                    b.ToTable("PublicProfiles");
                 });
 
             modelBuilder.Entity("SecteEcoPlus.Areas.Identity.Data.SecteUser", b =>
@@ -185,6 +179,8 @@ namespace SecteEcoPlus.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<int>("PublicProfileId");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
@@ -202,6 +198,9 @@ namespace SecteEcoPlus.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("PublicProfileId")
+                        .IsUnique();
+
                     b.ToTable("AspNetUsers");
                 });
 
@@ -211,7 +210,7 @@ namespace SecteEcoPlus.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AuthorId");
+                    b.Property<int?>("AuthorId");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -271,11 +270,12 @@ namespace SecteEcoPlus.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SecteEcoPlus.Areas.Identity.Data.PublicProfile", b =>
+            modelBuilder.Entity("SecteEcoPlus.Areas.Identity.Data.SecteUser", b =>
                 {
-                    b.HasOne("SecteEcoPlus.Areas.Identity.Data.SecteUser", "SecteUser")
-                        .WithOne("PublicProfile")
-                        .HasForeignKey("SecteEcoPlus.Areas.Identity.Data.PublicProfile", "SecteUserId");
+                    b.HasOne("SecteEcoPlus.Areas.Identity.Data.PublicProfile", "PublicProfile")
+                        .WithOne("SecteUser")
+                        .HasForeignKey("SecteEcoPlus.Areas.Identity.Data.SecteUser", "PublicProfileId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SecteEcoPlus.Models.Message", b =>

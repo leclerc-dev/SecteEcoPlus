@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -13,26 +14,26 @@ namespace SecteEcoPlus.Areas.Identity
 {
     public class SecteUserStore : UserStore<SecteUser>
     {
+        private WebsiteContext _context;
         public SecteUserStore(WebsiteContext context, IdentityErrorDescriber describer = null) : base(context, describer)
         {
+            _context = context;
         }
 
-        public async Task<int> GetPublicProfileIdByUserId(string id)
+        public async Task<string> GetDisplayNameByUserId(string id)
         {
-            return (await Users
-                .Select(u => new
-                {
-                    u.PublicProfile.SecteUserId,
-                    u.PublicProfile.PublicProfileId
-                })
-                .FirstOrDefaultAsync(n => n.SecteUserId == id)).PublicProfileId;
+            return (await GetPublicProfileByUserId(id))?.DisplayName;
         }
         public async Task<PublicProfile> GetPublicProfileByUserId(string id)
         {
-            var profileCol = Users
-                .Where(u => u.Id.Equals(id))
-                .Select(u => u.PublicProfile);
-            return await profileCol.FirstOrDefaultAsync();
+            Debug.WriteLine(nameof(GetPublicProfileByUserId));
+            var user = await FindByIdAsync(id);
+            if (user is null) return null;
+            return await GetPublicProfileById(user.PublicProfileId);
+        }
+        public async Task<PublicProfile> GetPublicProfileById(int id)
+        {
+            return await _context.PublicProfiles.FindAsync(id);
         }
         public async Task<T> GetPublicProfileByUserId<T>(string id, Expression<Func<PublicProfile, T>> selectExpression)
         {
@@ -49,6 +50,14 @@ namespace SecteEcoPlus.Areas.Identity
                 .Select(u => u.PublicProfile)
                 .Include(p => p.ReviewMessages);
             return await profileCol.FirstOrDefaultAsync();
+        }
+
+        public override async Task<IdentityResult> DeleteAsync(SecteUser user, CancellationToken cancellationToken = new CancellationToken())
+        {
+            var a = await base.DeleteAsync(user, cancellationToken);
+            _context.PublicProfiles.Remove(new PublicProfile { PublicProfileId = user.PublicProfileId });
+            await _context.SaveChangesAsync(cancellationToken);
+            return a;
         }
     }
 }

@@ -15,8 +15,6 @@ namespace SecteEcoPlus.Areas.Identity.Data
         [InverseProperty(nameof(Message.Author))]
         public ICollection<Message> ReviewMessages { get; set; }
 
-        public string SecteUserId { get; set; }
-        [ForeignKey("SecteUserId")]
         [JsonIgnore] // let's not show the pass on download :p
         public SecteUser SecteUser { get; set; }
 

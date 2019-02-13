@@ -1,11 +1,11 @@
 ﻿@inject SignInManager<SecteUser> SignInManager
-@inject UserManager<SecteUser> UserManager
+@inject SecteUserManager UserManager
 
 <ul class="navbar-nav">
 @if (!(ViewBag.IsDisconnecting ?? false) && SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a id="manage" class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Bienvenue, @UserManager.GetUserName(User)!</a>
+        <a id="manage" class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Bienvenue, @await UserManager.GetDisplayNameFromClaimAsync(User)!</a>
     </li>
     <li class="nav-item">
         <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">

@@ -1,14 +1,16 @@
 ﻿@inject SignInManager<SecteUser> SignInManager
 @{
+    dynamic manager = new NavPagesClassManager(ViewContext);
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
 <ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profil</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Mot de passe</a></li>
+    <li class="nav-item"><a class="nav-link @manager.Index" id="profile" asp-page="./Index">Profil</a></li>
+    <li class="nav-item"><a class="nav-link @manager.PublicProfile" id="public-profile" asp-page="./PublicProfile">Profil public</a></li>
+    <li class="nav-item"><a class="nav-link @manager.ChangePassword" id="change-password" asp-page="./ChangePassword">Mot de passe</a></li>
     @if (hasExternalLogins)
     {
-        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">Authentifications externes</a></li>
+        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @manager.ExternalLogins" asp-page="./ExternalLogins">Authentifications externes</a></li>
     }
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Authentification à deux facteurs</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Données personnelles</a></li>
+    <li class="nav-item"><a class="nav-link @manager.TwoFactorAuthentication" id="two-factor" asp-page="./TwoFactorAuthentication">Authentification à deux facteurs</a></li>
+    <li class="nav-item"><a class="nav-link @manager.PersonalData" id="personal-data" asp-page="./PersonalData">Données personnelles</a></li>
 </ul>

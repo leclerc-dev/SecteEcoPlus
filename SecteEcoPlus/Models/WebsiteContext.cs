@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using SecteEcoPlus.Areas.Identity.Data;
@@ -23,8 +23,10 @@ namespace SecteEcoPlus.Models
                 .HasForeignKey(m => m.AuthorId)
                 .OnDelete(DeleteBehavior.Cascade);
             builder.Entity<SecteUser>()
-                .HasOne(e => e.PublicProfile)
+                .HasOne( p=> p.PublicProfile)
                 .WithOne(p => p.SecteUser)
+                .HasForeignKey<SecteUser>(u => u.PublicProfileId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

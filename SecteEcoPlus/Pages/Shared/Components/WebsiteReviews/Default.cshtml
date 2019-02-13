@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Message>
 @addTagHelper *, SecteEcoPlus
 <h3 class="mt-0 mb-1 ml-1">Dernières suggestions</h3>
-<div class="overflow-auto h-75" id="messagesContainer">
+<div class="overflow-auto h-100" id="messagesContainer">
     @foreach (var message in Model)
     {
         <partial name="_ReviewPartial" model="message"/>

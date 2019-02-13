@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -16,18 +17,17 @@ namespace SecteEcoPlus.Areas.Identity
         {
             SecteUserStore = store;
         }
-
-        public async Task<int?> GetPublicProfileIdAsync(ClaimsPrincipal c)
-        {
-            var id = GetUserId(c);
-            var result = await SecteUserStore.GetPublicProfileIdByUserId(id);
-            if (result == 0) return null; // default 0
-            return result;
-        }
         public async Task<string> GetDisplayNameAsync(SecteUser user)
         {
-            var name = await SecteUserStore.GetPublicProfileByUserId(user.Id, p => p.DisplayName);
+            var name = await SecteUserStore.GetDisplayNameByUserId(user.Id);
             return name;
+        }
+
+        public async Task<string> GetDisplayNameFromClaimAsync(ClaimsPrincipal c)
+        {
+            var id = GetUserId(c);
+            if (id is null) return null;
+            return await SecteUserStore.GetDisplayNameByUserId(id);
         }
         public async Task<SecteUser> GetUserWithProfileAsync(ClaimsPrincipal c)
         {

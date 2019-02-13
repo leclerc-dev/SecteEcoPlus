@@ -141,13 +141,7 @@ namespace SecteEcoPlus.Migrations
 
                     b.Property<string>("DisplayName");
 
-                    b.Property<string>("SecteUserId");
-
                     b.HasKey("PublicProfileId");
-
-                    b.HasIndex("SecteUserId")
-                        .IsUnique()
-                        .HasFilter("[SecteUserId] IS NOT NULL");
 
                     b.ToTable("PublicProfiles");
                 });
@@ -183,6 +177,8 @@ namespace SecteEcoPlus.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<int>("PublicProfileId");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
@@ -199,6 +195,9 @@ namespace SecteEcoPlus.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("PublicProfileId")
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers");
                 });
@@ -269,11 +268,11 @@ namespace SecteEcoPlus.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SecteEcoPlus.Areas.Identity.Data.PublicProfile", b =>
+            modelBuilder.Entity("SecteEcoPlus.Areas.Identity.Data.SecteUser", b =>
                 {
-                    b.HasOne("SecteEcoPlus.Areas.Identity.Data.SecteUser", "SecteUser")
-                        .WithOne("PublicProfile")
-                        .HasForeignKey("SecteEcoPlus.Areas.Identity.Data.PublicProfile", "SecteUserId")
+                    b.HasOne("SecteEcoPlus.Areas.Identity.Data.PublicProfile", "PublicProfile")
+                        .WithOne("SecteUser")
+                        .HasForeignKey("SecteEcoPlus.Areas.Identity.Data.SecteUser", "PublicProfileId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

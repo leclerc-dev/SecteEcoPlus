@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Dynamic;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SecteEcoPlus.Areas.Identity.Pages.Account.Manage
@@ -15,21 +17,40 @@ namespace SecteEcoPlus.Areas.Identity.Pages.Account.Manage
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
-        public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
+        public static string PublicProfile => nameof(PublicProfile);
 
-        public static string ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);
-
-        public static string ExternalLoginsNavClass(ViewContext viewContext) => PageNavClass(viewContext, ExternalLogins);
-
-        public static string PersonalDataNavClass(ViewContext viewContext) => PageNavClass(viewContext, PersonalData);
-
-        public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
-
-        private static string PageNavClass(ViewContext viewContext, string page)
+        internal static string PageNavClass(ViewContext viewContext, string page)
         {
             var activePage = viewContext.ViewData["ActivePage"] as string
                 ?? System.IO.Path.GetFileNameWithoutExtension(viewContext.ActionDescriptor.DisplayName);
             return string.Equals(activePage, page, StringComparison.OrdinalIgnoreCase) ? "active" : null;
+        }
+    }
+
+    public class NavPagesClassManager : DynamicObject
+    {
+        public NavPagesClassManager(ViewContext context)
+        {
+            _context = context;
+        }
+        private readonly ViewContext _context;
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        {
+            result = ManageNavPages.PageNavClass(_context, binder.Name);
+            return true;
+        }
+
+        public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
+        {
+            if (binder.Name.EndsWith("NavClass"))
+            {
+                var name = binder.Name.Substring(0, binder.Name.Length - "NavClass".Length);
+                result = ManageNavPages.PageNavClass(_context, name);
+                return true;
+            }
+
+            result = null;
+            return false;
         }
     }
 }

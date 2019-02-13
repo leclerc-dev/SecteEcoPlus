@@ -8,7 +8,8 @@ namespace SecteEcoPlus.Areas.Identity.Data
     // Add profile data for application users by adding properties to the SecteUser class
     public class SecteUser : IdentityUser
     {
-        [PersonalData]
+        [PersonalData, ForeignKey(nameof(PublicProfileId))]
         public PublicProfile PublicProfile { get; set; } = new PublicProfile();
+        public int PublicProfileId { get; set; }
     }
 }

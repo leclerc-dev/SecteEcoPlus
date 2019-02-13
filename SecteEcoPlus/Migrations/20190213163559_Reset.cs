@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SecteEcoPlus.Migrations
 {
-    public partial class Restart : Migration
+    public partial class Reset : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,28 +23,16 @@ namespace SecteEcoPlus.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
+                name: "PublicProfiles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    PublicProfileId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DisplayName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.PrimaryKey("PK_PublicProfiles", x => x.PublicProfileId);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,6 +53,59 @@ namespace SecteEcoPlus.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    PublicProfileId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_PublicProfiles_PublicProfileId",
+                        column: x => x.PublicProfileId,
+                        principalTable: "PublicProfiles",
+                        principalColumn: "PublicProfileId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WebsiteReviews",
+                columns: table => new
+                {
+                    MessageId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AuthorId = table.Column<int>(nullable: true),
+                    Content = table.Column<string>(maxLength: 420, nullable: false),
+                    PublishDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WebsiteReviews", x => x.MessageId);
+                    table.ForeignKey(
+                        name: "FK_WebsiteReviews_PublicProfiles_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "PublicProfiles",
+                        principalColumn: "PublicProfileId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -153,47 +194,6 @@ namespace SecteEcoPlus.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "PublicProfile",
-                columns: table => new
-                {
-                    PublicProfileId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DisplayName = table.Column<string>(nullable: true),
-                    SecteUserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PublicProfile", x => x.PublicProfileId);
-                    table.ForeignKey(
-                        name: "FK_PublicProfile_AspNetUsers_SecteUserId",
-                        column: x => x.SecteUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WebsiteReviews",
-                columns: table => new
-                {
-                    MessageId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AuthorId = table.Column<int>(nullable: false),
-                    Content = table.Column<string>(maxLength: 420, nullable: false),
-                    PublishDate = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WebsiteReviews", x => x.MessageId);
-                    table.ForeignKey(
-                        name: "FK_WebsiteReviews_PublicProfile_AuthorId",
-                        column: x => x.AuthorId,
-                        principalTable: "PublicProfile",
-                        principalColumn: "PublicProfileId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -234,11 +234,10 @@ namespace SecteEcoPlus.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PublicProfile_SecteUserId",
-                table: "PublicProfile",
-                column: "SecteUserId",
-                unique: true,
-                filter: "[SecteUserId] IS NOT NULL");
+                name: "IX_AspNetUsers_PublicProfileId",
+                table: "AspNetUsers",
+                column: "PublicProfileId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_WebsiteReviews_AuthorId",
@@ -270,10 +269,10 @@ namespace SecteEcoPlus.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "PublicProfile");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "PublicProfiles");
         }
     }
 }

@@ -1,0 +1,22 @@
+﻿@page
+@model PublicProfileModel
+@{
+    ViewBag.Title = "Profil public";
+    ViewBag.ActivePage = ManageNavPages.PublicProfile;
+}
+<h4>@ViewBag.Title</h4> @* ViewBag gang :3 *@
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Input.DisplayName"></label>
+                <input type="text" asp-for="Input.DisplayName" class="form-control"/>
+                <span asp-validation-for="Input.DisplayName"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

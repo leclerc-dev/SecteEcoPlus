@@ -28,7 +28,7 @@ html {
     color: red;
 }
 .reviews {
-    max-height: 75vh;
+    max-height: 45vh;
 }
 footer {
     padding: 0 1rem;
@@ -45,5 +45,10 @@ footer {
     }
     100% {
         background-color: inherit;
+    }
+}
+@media (max-width: 575.98px) {
+    .reviews {
+        max-height: none;
     }
 }

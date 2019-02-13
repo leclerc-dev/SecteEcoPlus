@@ -35,10 +35,7 @@ namespace SecteEcoPlus.Controllers
             PublicProfile profile = null;
             if (!messageRequest.IsAnonymous && _signInManager.IsSignedIn(User))
             {
-                profile = _context
-                          .Users
-                          .Select(u => u.PublicProfile)
-                          .FirstOrDefault(p => p.SecteUserId == _userManager.GetUserId(User));
+                profile = await _userManager.GetPublicProfileByUserAsync(User);
             }
             var model = new Message
             {

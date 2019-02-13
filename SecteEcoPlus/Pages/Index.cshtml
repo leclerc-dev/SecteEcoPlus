@@ -12,7 +12,7 @@
     <div class="container mt-3 px-0">
         <div class="row">
             <div class="col-md-auto">
-                <cache enabled="true" vary-by-user="true" expires-after="@TimeSpan.FromMinutes(60)">
+                <cache enabled="true" vary-by-user="true" expires-after="@TimeSpan.FromMinutes(5)">
                     <partial name="_WebsiteReviewFormPartial" model="@(new MessageRequestViewModel())" /> @* Send ideas here *@
                 </cache>
             </div>
