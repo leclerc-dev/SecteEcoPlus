@@ -8,7 +8,7 @@
 
 @if (showBanner)
 {
-    <div id="cookieConsent" class="alert-info">
+    <div id="cookieConsent" class="alert alert-info" role="alert" id="alert">
         Ici vous pouvez voir ce que collectons de vous. <a asp-page="/Index">En savoir plus ô maître</a>.
         <button type="button" class="accept-policy btn btn-outline-primary" id="cookieConsent"  data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString">
             <span aria-hidden="true">Je veux oui svp</span>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,56 +24,37 @@ namespace SecteEcoPlus.Areas.Identity.Pages.Profile
             _userManager = userManager;
             _signInManager = signInManager;
         }
-        public IEnumerable<Message> LastMessages { get; set; }
-        [Display(Name = "Nom d'utilisateur")]
-        public string Username { get; set; }
-
-        public async Task<IActionResult> OnGet(Guid? id = null)
+        public PublicProfile Profile { get; set; }
+        public async Task<IActionResult> OnGet(int? id = null, string name = null)
         {
+            if (name != null && id != null) return await GetUserPage(id.Value);
             if (id is null && _signInManager.IsSignedIn(User))
             {
-                var subId = _userManager.GetUserId(User);
-                if (string.IsNullOrWhiteSpace(subId))
-                {
-                    return NotFound("Une erreur très bizarre s'est produite.");
-                }
-
-                return RedirectToPage(new { id = Guid.Parse(subId) });
+                var user = await _userManager.GetUserAsync(User);
+                return RedirectToPage(new { id = user.PublicProfileId });
             }
             if (id is null)
             {
-                return NotFound("Vous n'êtes pas connecté.");
+                return NotFound("Erreur :c je pleur +");
             }
 
-            return await GetUserPage(id);
+            return RedirectToPage("Index", new {id, name = (await _context.PublicProfiles.FindAsync(id)).DisplayName});
         }
-
-        private async Task<IActionResult> GetUserPage(Guid? id)
+        private async Task<IActionResult> GetUserPage(int id)
         {
             //var user = await _userManager.FindByIdAsync(id.ToString());
-            var user = await _context.Users
+            var profile = await _context.PublicProfiles
                 .AsNoTracking()
-                .Include(u => u.PublicProfile)
-                .ThenInclude(p => p.ReviewMessages)
-                .Where(u => u.Id == id.ToString())
-                .Select(u => new
-                {
-                    u.PublicProfile.DisplayName,
-                    u.PublicProfile.ReviewMessages
-                }) // yes anonymous pls
-                .FirstOrDefaultAsync();
-            if (user is null)
-            {
-                return NotFound("Utilisateur introuvable :(");
-            }
+                .Include(p => p.ReviewMessages)
+                    .ThenInclude(m => m.Author)
+                .FirstOrDefaultAsync(u => u.PublicProfileId == id);
 
-            Username = user.DisplayName;
-            var l = user.ReviewMessages
-                .Take(5)
-                .OrderByDescending(m => m.PublishDate)
-                .ToList();
-            l.ForEach(m => m.Author = new PublicProfile { DisplayName = user.DisplayName });
-            LastMessages = l;
+            if (profile is null)
+            {
+                return NotFound("Utilisateur introuvable :( je pleur");
+            }
+            Profile = profile;
+            ViewData["Profile"] = Profile; // no ViewBag :c 
             return Page();
         }
     }

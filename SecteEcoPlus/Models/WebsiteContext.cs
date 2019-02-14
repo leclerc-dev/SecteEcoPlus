@@ -28,6 +28,9 @@ namespace SecteEcoPlus.Models
                 .HasForeignKey<SecteUser>(u => u.PublicProfileId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<PublicProfile>()
+                .Property(u => u.Experience)
+                .HasDefaultValue(1);
         }
     }
 }

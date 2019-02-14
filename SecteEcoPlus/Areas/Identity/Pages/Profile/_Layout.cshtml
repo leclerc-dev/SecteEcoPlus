@@ -1,12 +1,15 @@
 ﻿@{
     Layout = "~/Pages/Shared/_Layout.cshtml";
+    var profile = (PublicProfile)ViewBag.Profile; // yay
 }
-<div class="container-fluid">
+<div class="container-fluid px-1 px-md-2">
     <div class="row">
-        <div class="col-lg-auto">
+        <div class="col-lg-auto mb-1 mb-lg-0">
             <header class="text-center">
-                <span class="h3">Profil de :</span>
-                <span class="text-center h1 d-md-block">@ViewBag.DisplayName</span>
+                <div class="text-center h2 mb-1">@profile.DisplayName</div>
+                <div class="d-inline-block">Niveau @profile.Level (@profile.Experience/@profile.ExperienceNeededForNextLevel)</div>
+                <span class="d-inline d-lg-none"> - </span>
+                <div class="d-inline d-lg-block">@profile.GetTitle()</div>
             </header>
         </div>
         <div class="col">

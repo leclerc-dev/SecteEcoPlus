@@ -5,11 +5,17 @@
 @if (!(ViewBag.IsDisconnecting ?? false) && SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a id="manage" class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Bienvenue, @await UserManager.GetDisplayNameFromClaimAsync(User)!</a>
+        <a id="manage" class="nav-link text-white" asp-area="Identity" asp-page="/Profile/Index" asp-route-id="@await UserManager.GetPublicProfileIdByUserAsync(User)" 
+           title="Voir le profil public">Bienvenue, @await UserManager.GetDisplayNameFromClaimAsync(User)!</a>
     </li>
     <li class="nav-item">
+        <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Paramètres du compte">
+            <span class="fas fa-cog spinning-cog"></span> <span class="d-md-none my-auto">Paramètres</span>
+        </a>
+    </li>
+    <li class="nav-item ml-md-1">
         <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-danger text-white">Se déconnecter</button>
+            <button id="logout" type="submit" class="nav-link px-1 btn btn-sm btn-danger text-white">Se déconnecter</button>
         </form>
     </li>
 }

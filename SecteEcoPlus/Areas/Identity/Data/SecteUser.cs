@@ -9,7 +9,7 @@ namespace SecteEcoPlus.Areas.Identity.Data
     public class SecteUser : IdentityUser
     {
         [PersonalData, ForeignKey(nameof(PublicProfileId))]
-        public PublicProfile PublicProfile { get; set; } = new PublicProfile();
+        public PublicProfile PublicProfile { get; set; }
         public int PublicProfileId { get; set; }
     }
 }

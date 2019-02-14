@@ -5,7 +5,7 @@
     ViewBag.UseReviewScripts = true;
     var profile = await UserManager.GetPublicProfileByUserAsync(User);
 }
-<div class="card m-2 @(ViewBag.IsRecent ?? false ? "review-recent-submit" : "")" data-review>
+<div class="card m-md-2 my-2 shadow-sm @(ViewBag.IsRecent ?? false ? "review-recent-submit" : "")" data-review>
     <div class="card-body">
         <span>
             @{ var text = Model.Author?.GetDisplayName(UserManager) ?? "Anonyme"; }

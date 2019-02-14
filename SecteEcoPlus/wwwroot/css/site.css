@@ -11,11 +11,8 @@ button.accept-policy {
 html {
     margin-top: 0;
     min-height: 100%;
+    min-width: 100%;
 }
-.content {
-    margin: 10px calc(16px + 3vw);
-}
-
 .field-validation-error {
     color: red;
     font-weight: bold;
@@ -36,6 +33,13 @@ footer {
 .review-recent-submit {
     animation: 0.5s ease-in-out review-posted;
 }
+.spinning-cog {
+    transition: transform linear 0.4s;
+}
+.spinning-cog:hover {
+    transform: rotate(360deg)
+}
+
 @keyframes review-posted {
     0% {
         background-color: inherit;

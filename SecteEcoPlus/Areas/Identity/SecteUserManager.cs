@@ -23,6 +23,10 @@ namespace SecteEcoPlus.Areas.Identity
             return name;
         }
 
+        public async Task<int?> GetPublicProfileIdByUserAsync(ClaimsPrincipal c)
+        {
+            return (await GetPublicProfileByUserAsync(c))?.PublicProfileId;
+        }
         public async Task<string> GetDisplayNameFromClaimAsync(ClaimsPrincipal c)
         {
             var id = GetUserId(c);
