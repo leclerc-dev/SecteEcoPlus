@@ -1,0 +1,18 @@
+﻿@page
+@model SecteEcoPlus.Pages.Rankings.IndexModel
+@{
+    ViewBag.Title = "Classement";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<div class="container-fluid">
+    <div class="row">
+        @foreach (var profile in Model.Rankings)
+        {
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <partial name="_RankingItem" model="profile" />
+            </div>
+        }
+    </div>
+</div>

@@ -1,19 +1,31 @@
 ﻿@{
     Layout = "~/Pages/Shared/_Layout.cshtml";
-    var profile = (PublicProfile)ViewBag.Profile; // yay
+    var profile = ViewBag.Profile as PublicProfile ?? PublicProfile.NotFoundProfile; // yay
+    var isProfileInvalid = profile == PublicProfile.NotFoundProfile;
 }
 <div class="container-fluid px-1 px-md-2">
     <div class="row">
         <div class="col-lg-auto mb-1 mb-lg-0">
             <header class="text-center">
                 <div class="text-center h2 mb-1">@profile.DisplayName</div>
-                <div class="d-inline-block">Niveau @profile.Level (@profile.Experience/@profile.ExperienceNeededForNextLevel)</div>
-                <span class="d-inline d-lg-none"> - </span>
-                <div class="d-inline d-lg-block">@profile.GetTitle()</div>
+                @if (!isProfileInvalid)
+                {
+                    <div class="d-inline-block">Niveau @profile.Level (@profile.Experience/@profile.ExperienceNeededForNextLevel)</div>
+                    <span class="d-inline d-lg-none"> - </span>
+                    <div class="d-inline d-lg-block">@profile.GetTitle()</div>
+                }
             </header>
         </div>
         <div class="col">
-            @RenderBody()
+            @if (!isProfileInvalid)
+            {
+                @RenderBody()
+            }
+            else
+            {
+                <h2>Erreur</h2>
+                <h3>Cet utilisateur est introuvable. Il a peut être été supprimé.</h3>
+            }
         </div>
     </div>
 </div>

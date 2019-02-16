@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SecteEcoPlus.Areas.Identity.Data;
 using SecteEcoPlus.Models;
+using SecteEcoPlus.Utilities;
 
 namespace SecteEcoPlus.Areas.Identity.Pages.Profile
 {
@@ -33,26 +34,24 @@ namespace SecteEcoPlus.Areas.Identity.Pages.Profile
                 var user = await _userManager.GetUserAsync(User);
                 return RedirectToPage(new { id = user.PublicProfileId });
             }
-            if (id is null)
-            {
-                return NotFound("Erreur :c je pleur +");
+            PublicProfile profile;
+            if (id is null || (profile = await _context.PublicProfiles.FindAsync(id)) is null)
+            {           
+                ViewData["Profile"] = Profile = PublicProfile.NotFoundProfile;
+                return Page();
             }
-
-            return RedirectToPage("Index", new {id, name = (await _context.PublicProfiles.FindAsync(id)).DisplayName});
+            
+            return RedirectToPage("Index", new {id, name = profile.DisplayName.AdaptToRoute()});
         }
         private async Task<IActionResult> GetUserPage(int id)
         {
             //var user = await _userManager.FindByIdAsync(id.ToString());
             var profile = await _context.PublicProfiles
-                .AsNoTracking()
-                .Include(p => p.ReviewMessages)
-                    .ThenInclude(m => m.Author)
-                .FirstOrDefaultAsync(u => u.PublicProfileId == id);
+                              .AsNoTracking()
+                              .Include(p => p.ReviewMessages)
+                              .ThenInclude(m => m.Author)
+                              .FirstOrDefaultAsync(u => u.PublicProfileId == id) ?? PublicProfile.NotFoundProfile;
 
-            if (profile is null)
-            {
-                return NotFound("Utilisateur introuvable :( je pleur");
-            }
             Profile = profile;
             ViewData["Profile"] = Profile; // no ViewBag :c 
             return Page();

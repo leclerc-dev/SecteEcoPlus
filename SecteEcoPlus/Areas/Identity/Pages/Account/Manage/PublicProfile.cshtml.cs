@@ -5,21 +5,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using SecteEcoPlus.Areas.Identity.Data;
+using SecteEcoPlus.Models;
 
 namespace SecteEcoPlus.Areas.Identity.Pages.Account.Manage
 {
     public class PublicProfileModel : PageModel
     {
         private SecteUserManager _userManager;
+        private WebsiteContext _context;
 
-        public PublicProfileModel(SecteUserManager manager)
+        public PublicProfileModel(SecteUserManager manager, WebsiteContext context)
         {
             _userManager = manager;
+            _context = context;
         }
         [BindProperty]
         public InputModel Input { get; set; }
         public PublicProfile Profile { get; set; }
+        public bool? IsSuccessful { get; set; }
         public class InputModel
         {
             [Display(Name = "Pseudonyme")]
@@ -56,10 +61,16 @@ namespace SecteEcoPlus.Areas.Identity.Pages.Account.Manage
 
             if (user.PublicProfile.DisplayName != Input.DisplayName)
             {
+                var exists = await _context.PublicProfiles.AnyAsync(p => p.DisplayName == Input.DisplayName);
+                if (exists)
+                {
+                    ModelState.AddModelError("Input.DisplayName", "Le pseudonyme existe déjà.");
+                    return Page();
+                }
                 user.PublicProfile.DisplayName = Input.DisplayName;
             }
-
             await _userManager.UpdateAsync(user);
+            IsSuccessful = true;
             return RedirectToPage();
         }
     }

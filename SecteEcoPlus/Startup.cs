@@ -62,6 +62,7 @@ namespace SecteEcoPlus
                 options.Password.RequiredUniqueChars = 0;
             });
             services.AddSingleton<IEmailSender, EmailService>();
+            services.AddSingleton(new Random());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

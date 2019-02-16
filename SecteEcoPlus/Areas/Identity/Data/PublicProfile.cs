@@ -6,23 +6,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
+using SecteEcoPlus.Experience;
 using SecteEcoPlus.Models;
 
 namespace SecteEcoPlus.Areas.Identity.Data
 {
-    public class PublicProfile
+    public class PublicProfile : ExperienceObject
     {
+        public static readonly PublicProfile NotFoundProfile = new PublicProfile
+        {
+            DisplayName = "Introuvable",
+            ReviewMessages = Enumerable.Empty<Message>().ToArray()           
+        };
         public int PublicProfileId { get; set; }
 
         public string DisplayName { get; set; }
-
-        public int Experience { get; set; }
-
-        public const double LevelGrowth = 0.2;
-        public int Level => (int)(LevelGrowth * Math.Sqrt(Experience)) + 1;
-        public int NextLevel => Level + 1;
-        public int ExperienceNeededForNextLevel => (int)Math.Pow(Level / LevelGrowth, 2);
-        public int ExperienceLeftForNextLevel => ExperienceNeededForNextLevel - Experience;
 
         [InverseProperty(nameof(Message.Author))]
         public ICollection<Message> ReviewMessages { get; set; }
@@ -36,10 +34,12 @@ namespace SecteEcoPlus.Areas.Identity.Data
             return DisplayName ?? SecteUser?.UserName ?? fallback;
         }
 
-        public string GetTitle()
+        public static string GetTitle(int lvl)
         {
-            return LevelTitles.Count < Level ? LevelTitles.Last() : LevelTitles[Level - 1];
+            return LevelTitles.Count < lvl ? LevelTitles.Last() : LevelTitles[lvl - 1];
         }
+
+        public string GetTitle() => GetTitle(Level);
         public static readonly IReadOnlyList<string> LevelTitles = new[]
         {
             "Nouveau de la secte", // 1

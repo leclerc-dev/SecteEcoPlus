@@ -10,10 +10,19 @@
     <p>Nous suivons les recettes sacrées d'El Pueblo, et nous achetons que des produits éco+.</p>
     <p>Rejoins-nous, achète des produits éco+, et sois un véritable leclerien.</p>
     <div class="container mt-3 px-0">
+        <div class="row mb-1">
+            <div class="col-md-5 col-lg-4">
+                <h3 class="my-0">Écrire une suggestion</h3>
+            </div>
+            <div class="col-md d-none d-md-block">
+                <h3 class="my-0">Dernières suggestions</h3>
+            </div>
+        </div>
         <div class="row">
-            <div class="col-md-auto">
-                <cache enabled="true" vary-by-user="true" expires-after="@TimeSpan.FromMinutes(5)">
-                    <partial name="_WebsiteReviewFormPartial" model="@(new MessageRequestViewModel())" /> @* Send ideas here *@
+            <div class="col-md-5 col-lg-4">
+                <cache enabled="true" vary-by-user="true" expires-after="@TimeSpan.FromMinutes(5)" vary-by-query="refresh">
+                    <partial name="_WebsiteReviewFormPartial" model="@(new MessageRequestViewModel())"/> @* Send ideas here *@
+                    <vc:website-reviews></vc:website-reviews>
                 </cache>
             </div>
             <div class="col-md reviews">

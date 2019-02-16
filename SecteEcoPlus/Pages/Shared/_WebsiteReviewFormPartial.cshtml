@@ -16,27 +16,31 @@
         $('#contentMessageText').val('');
     };
 </script>
-<span class="h3 my-0">Écrire une suggestion</span>
-<form method="post" data-ajax="true" data-ajax-method="post" data-ajax-update="#messagesContainer" data-ajax-url="@Url.Action("Submit", "Review")" data-ajax-mode="before" data-ajax-complete="success">
-    <div class="form-group">
+<form method="post" id="reviewForm"  data-ajax="true" data-ajax-method="post" data-ajax-update="#messagesContainer" data-ajax-url="@Url.Action("Submit", "Review")" data-ajax-mode="before" data-ajax-complete="success">
+    <div class="form-group d-flex flex-column">
         <label>Auteur</label>
         <input type="text" class="form-control" placeholder="Edouard Leclerc" id="authorInput" readonly value="@authorName" />
         <label>
-            <input type="checkbox" asp-for="IsAnonymous" id="anonymous" disabled="@(isSignedIn ? null : "disabled")"/>
+            <input type="checkbox" asp-for="IsAnonymous" id="anonymous" disabled="@(isSignedIn ? null : "disabled")" />
             @Html.DisplayNameFor(m => m.IsAnonymous)
         </label>
         <div class="form-group">
             <label asp-for="Content"></label>
-            <textarea asp-for="Content" id="contentMessageText" class="form-control"></textarea>
+            <textarea asp-for="Content" id="contentMessageText" class="form-control" rows="5"></textarea>
             <span asp-validation-for="Content"></span>
         </div>
-        <button type="submit" class="btn btn-success">Envoyer</button>
+        <button type="submit" class="btn btn-success" id="submitFormButton">Envoyer</button>
     </div>
 </form>
 <script>
-    $('#anonymous').change(function() {
+    $('#anonymous').change(function () {
         var input = $('#authorInput');
         this.checked ? input.val('Anonyme') : input.val(authorName);
+    });
+    $('#contentMessageText').keydown(function (e) {
+        if (e.ctrlKey && e.keyCode === 13) {
+            $("#reviewForm button#submitFormButton").click();
+        }
     });
 </script>
 @* VIVE ECO+ !!!*@

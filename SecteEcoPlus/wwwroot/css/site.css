@@ -25,7 +25,7 @@ html {
     color: red;
 }
 .reviews {
-    max-height: 45vh;
+    max-height: 360px;
 }
 footer {
     padding: 0 1rem;
@@ -39,7 +39,31 @@ footer {
 .spinning-cog:hover {
     transform: rotate(360deg)
 }
-
+.rank-1 {
+    box-shadow: 0 0 14px 2.75px gold;
+}
+.rank-2 {
+    box-shadow: 0 0 14px 1.425px silver;
+}
+.rank-3 {
+    box-shadow: 0 0 14px 0.3px #cb3131;
+    box-shadow: 0 0 14px 0.3px rgba(203, 49, 49, .37);
+}
+.rank-number {
+    font-size: 1.25em;
+}
+.rank-1 .rank-number{
+    color: gold;
+    font-weight: bold;
+}
+.rank-2 .rank-number{
+    color: silver;
+    font-weight: bold;
+}
+.rank-3 .rank-number {
+    color: rgb(203, 49, 49);
+    font-weight: bold;
+}
 @keyframes review-posted {
     0% {
         background-color: inherit;

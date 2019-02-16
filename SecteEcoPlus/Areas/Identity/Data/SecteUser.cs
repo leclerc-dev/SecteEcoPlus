@@ -11,5 +11,6 @@ namespace SecteEcoPlus.Areas.Identity.Data
         [PersonalData, ForeignKey(nameof(PublicProfileId))]
         public PublicProfile PublicProfile { get; set; }
         public int PublicProfileId { get; set; }
+        
     }
 }
