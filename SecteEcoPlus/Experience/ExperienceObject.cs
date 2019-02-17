@@ -10,19 +10,27 @@ namespace SecteEcoPlus.Experience
         public int Experience
         {
             get => _experience;
-            set
-            {
-                if (ExperienceDebt <= 0)
-                {
-                    _experience = value;
-                }
-                var diff = value - _experience;
-                var afterDebt = ExperienceDebt - diff;
-                ExperienceDebt = Math.Max(afterDebt, 0);
-                _experience += Math.Max(-afterDebt, 0);
-            }
+            set => SetExperience(value);
         }
 
+        public int SetExperience(int value)
+        {
+            if (ExperienceDebt <= 0)
+            {
+                var experienceDiff = value - _experience;
+                _experience = value;
+                return experienceDiff;
+            }
+            var diff = value - _experience;
+            var afterDebt = ExperienceDebt - diff;
+            ExperienceDebt = Math.Max(afterDebt, 0);
+            var modifiedExperience = Math.Max(-afterDebt, Math.Min(diff, 0));
+            _experience += modifiedExperience;
+            return modifiedExperience;
+        }
+
+        public int AddExperience(int value) => SetExperience(Experience + value);
+        public int RemoveExperience(int value) => SetExperience(Experience - value);
         public int Level => GetLevel(Experience);
         public int ExperienceNeededForNextLevel => GetExperienceNeededForNextLevel(Level);
         public int ExperienceLeftForNextLevel => GetExperienceLeftForNextLevel(Level, Experience);

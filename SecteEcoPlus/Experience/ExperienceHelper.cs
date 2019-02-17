@@ -1,11 +1,11 @@
-﻿using System;
-using SecteEcoPlus.Areas.Identity.Data;
+﻿using SecteEcoPlus.Areas.Identity.Data;
+using System;
 
 namespace SecteEcoPlus.Experience
 {
     public static class ExperienceHelper
     {
-        public const double LevelGrowth = 0.2;
+        public const double LevelGrowth = 0.254;
 
         public static int GetLevel(int xp) => (int)(LevelGrowth * Math.Sqrt(xp)) + 1;
         public static int GetNextLevel(int lvl) => lvl + 1;

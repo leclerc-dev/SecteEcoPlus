@@ -10,10 +10,7 @@ namespace SecteEcoPlus.Utilities
             return new string(chars);
         }
 
-        private static bool FilterCharacter(char c)
-        {
-            return !char.IsPunctuation(c);
-        }
+        private static bool FilterCharacter(char c) => !char.IsPunctuation(c);
         private static char ProcessCharToNormalize(char c)
         {
             if (char.IsWhiteSpace(c)) return '-';

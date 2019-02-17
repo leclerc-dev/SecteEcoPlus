@@ -29,7 +29,7 @@ namespace SecteEcoPlus.Areas.Identity.Data
         [JsonIgnore] // let's not show the pass on download :p
         public SecteUser SecteUser { get; set; }
 
-        public string GetDisplayName(UserManager<SecteUser> manager = null, string fallback = "Anonyme")
+        public string GetDisplayName(string fallback = "Anonyme")
         {
             return DisplayName ?? SecteUser?.UserName ?? fallback;
         }

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SecteEcoPlus.Areas.Identity;
 using SecteEcoPlus.Areas.Identity.Data;
 using SecteEcoPlus.Models;
 using SecteEcoPlus.ViewModels;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SecteEcoPlus.Controllers
 {
@@ -19,8 +19,8 @@ namespace SecteEcoPlus.Controllers
         private readonly SignInManager<SecteUser> _signInManager;
         private readonly Random _random;
 
-        private static int ReviewSubmitExperienceReward => 12;
-
+        private const int ReviewSubmitExperienceReward = 13;
+        private const int SubsequentReviewModifier = 2;
         public ReviewController(WebsiteContext context, SecteUserManager userManager, SignInManager<SecteUser> signInManager, Random random)
         {
             _context = context;
@@ -50,10 +50,17 @@ namespace SecteEcoPlus.Controllers
             if (profile != null)
             {
                 var baseValue = ReviewSubmitExperienceReward;
-                var recentMessages = await GetRecentMessagesCountAsync(profile);
+                var recentMessages = await GetRecentMessagesCountAsync(profile) * SubsequentReviewModifier;
                 baseValue = Math.Max(baseValue - recentMessages, 0);
                 if (baseValue > 0)
-                    profile.Experience += baseValue;
+                {
+                    var realXpGained = profile.AddExperience(baseValue);
+                    if (realXpGained > 0)
+                    {
+                        ViewBag.HasExperience = true;
+                        ViewBag.GainedExperience = baseValue;
+                    }
+                }
             }
             await _context.WebsiteReviews.AddAsync(model);
             await _context.SaveChangesAsync();
@@ -64,7 +71,7 @@ namespace SecteEcoPlus.Controllers
         private async Task<int> GetRecentMessagesCountAsync(PublicProfile profile)
         {
             return await _context.WebsiteReviews.Where(m =>
-                m.AuthorId == profile.PublicProfileId && DateTime.Now.Subtract(m.PublishDate) < TimeSpan.FromDays(1)).CountAsync();
+                m.AuthorId == profile.PublicProfileId && DateTime.Now.Subtract(m.PublishDate) < TimeSpan.FromHours(3)).CountAsync();
         }
 
         [HttpGet, Route("api/delete-review/{id}")]
@@ -91,7 +98,7 @@ namespace SecteEcoPlus.Controllers
             }
             // alright everything is fine
             _context.WebsiteReviews.Remove(message);
-            user.ExperienceDebt += Math.Max(ReviewSubmitExperienceReward - await GetRecentMessagesCountAsync(user) + 1, 0);
+            user.ExperienceDebt += Math.Max(ReviewSubmitExperienceReward - await GetRecentMessagesCountAsync(user) * SubsequentReviewModifier + SubsequentReviewModifier, 0);
             await _context.SaveChangesAsync();
             return Ok();
         }

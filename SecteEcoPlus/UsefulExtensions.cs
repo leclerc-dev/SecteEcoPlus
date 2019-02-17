@@ -12,7 +12,7 @@ namespace SecteEcoPlus
             return value.GetValueOrDefault(def);
         }
 
-        public static T Default<T>(this T value, T def) where T : class
+        public static T DefaultRef<T>(this T value, T def) where T : class
         {
             return value.Equals(default(T)) ? def : value;
         }

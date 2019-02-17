@@ -6,7 +6,7 @@
 @addTagHelper *, SecteEcoPlus
 <h4>Dernières suggestions de @Model.Profile.DisplayName</h4>
 <div class="overflow-auto h-100" id="messagesContainer">
-    @foreach (var message in Model.Profile.ReviewMessages)
+    @foreach (var message in Model.Reviews)
     {
         <partial name="_ReviewPartial" model="@message" />
         

@@ -64,6 +64,13 @@ footer {
     color: rgb(203, 49, 49);
     font-weight: bold;
 }
+.experience-notification {
+    animation-name: experience-notification-fade, experience-notification-fade;
+    animation-delay: 0s, 4s;
+    animation-direction: normal, reverse;
+    animation-fill-mode: forwards, forwards;
+    animation-duration: 0.5s, 1s;
+}
 @keyframes review-posted {
     0% {
         background-color: inherit;
@@ -73,6 +80,14 @@ footer {
     }
     100% {
         background-color: inherit;
+    }
+}
+@keyframes experience-notification-fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }
 @media (max-width: 575.98px) {

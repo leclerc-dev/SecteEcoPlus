@@ -8,7 +8,7 @@
 <div class="card m-md-2 my-2 shadow-sm @(ViewBag.IsRecent ?? false ? "review-recent-submit" : "")" data-review>
     <div class="card-body">
         <span>
-            @{ var text = Model.Author?.GetDisplayName(UserManager) ?? "Anonyme"; }
+            @{ var text = Model.Author?.GetDisplayName() ?? "Anonyme"; }
             @if (Model.AuthorId != null)
             {
                 <a asp-area="Identity" asp-page="/Profile/Index" asp-route-id="@Model.AuthorId"><b>@text</b></a>
@@ -22,7 +22,14 @@
         <p>@Html.DisplayFor(m => m.Content)</p>
         @if (SignInManager.IsSignedIn(User) && profile.PublicProfileId == Model.AuthorId)
         {
-            <a href="#" data-delete-request-url="@Url.Action("Delete", "Review", new {id = Model.MessageId})" class="btn btn-danger btn-sm">Supprimer</a>
+            <button href="#" data-delete-request-url="@Url.Action("Delete", "Review", new {id = Model.MessageId})" class="btn btn-danger btn-sm">
+                <span style="display: none;" class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                <span>Supprimer</span>
+            </button>
+            if (ViewBag.HasExperience ?? false)
+            {
+                <span class="experience-notification text-success font-weight-bold ml-3">+@ViewBag.GainedExperience XP</span>
+            }
         }
     </div>
 </div>
