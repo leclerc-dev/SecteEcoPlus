@@ -5,7 +5,7 @@ namespace SecteEcoPlus.Experience
 {
     public static class ExperienceHelper
     {
-        public const double LevelGrowth = 0.254;
+        public const double LevelGrowth = 0.273;
 
         public static int GetLevel(int xp) => (int)(LevelGrowth * Math.Sqrt(xp)) + 1;
         public static int GetNextLevel(int lvl) => lvl + 1;

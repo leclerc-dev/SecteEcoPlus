@@ -1,18 +1,18 @@
 ﻿@using SecteEcoPlus.Experience
 @model ProfileRanking
 @{ var isRanked = Model.Rank <= 3; }
-<div class="card @(isRanked ? "my-2" : "my-1") @(isRanked ? $"rank-{Model.Rank}" : "")">
+<div class="card flex-grow-1 @(isRanked ? "my-2" : "my-1") @(isRanked ? $"rank-{Model.Rank}" : "")">
     <div class="card-body">
         <div>
             <a class="card-title h4 text-primary" asp-page="/Profile/Index" asp-area="Identity" asp-route-id="@Model.Id">@Model.DisplayName</a>
             <span class="float-right rank-number">#@Model.Rank</span>
         </div>
         <div class="row no-gutters">
-            <div class="col-auto">
+            <div class="col-auto mr-2">
                 <span class="small text-muted">LVL</span>
                 <div class="d-inline d-lg-block h6">@Model.Level</div>
             </div>
-            <div class="col-auto align-self-center ml-2 mb-md-1">
+            <div class="col-auto align-self-center mb-md-1">
                 <div>
                     @Model.GetXpTitle()<span class="d-inline d-lg-none"> - </span>
                     <div class="text-muted font-weight-bold small d-inline d-lg-block">@Model.Experience XP</div>

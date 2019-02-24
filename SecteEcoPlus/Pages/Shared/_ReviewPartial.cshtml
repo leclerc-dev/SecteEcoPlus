@@ -2,27 +2,18 @@
 @inject SecteUserManager UserManager
 @inject SignInManager<SecteUser> SignInManager
 @{
-    ViewBag.UseReviewScripts = true;
     var profile = await UserManager.GetPublicProfileByUserAsync(User);
+    var displayName = Html.DisplayTextFor(m => m.Author.DisplayName);
 }
 <div class="card m-md-2 my-2 shadow-sm @(ViewBag.IsRecent ?? false ? "review-recent-submit" : "")" data-review>
     <div class="card-body">
         <span>
-            @{ var text = Model.Author?.GetDisplayName() ?? "Anonyme"; }
-            @if (Model.AuthorId != null)
-            {
-                <a asp-area="Identity" asp-page="/Profile/Index" asp-route-id="@Model.AuthorId"><b>@text</b></a>
-            }
-            else
-            {
-                <b>@text</b>
-            }
-            a dit le @Html.DisplayFor(m => m.PublishDate) :
+            @Html.DisplayFor(m => m.Author, "ProfileLink") a dit le @Html.DisplayFor(m => m.PublishDate) :
         </span>
-        <p>@Html.DisplayFor(m => m.Content)</p>
-        @if (SignInManager.IsSignedIn(User) && profile.PublicProfileId == Model.AuthorId)
+        <p>@Model.Content</p>
+        @if (SignInManager.IsSignedIn(User) && profile?.PublicProfileId == Model.AuthorId)
         {
-            <button href="#" data-delete-request-url="@Url.Action("Delete", "Review", new {id = Model.MessageId})" class="btn btn-danger btn-sm">
+            <button href="#" data-delete-request-url="@Url.Action("Delete", "Review", new {id = Model.MessageId})" class="btn btn-danger btn-sm review-submit">
                 <span style="display: none;" class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
                 <span>Supprimer</span>
             </button>

@@ -4,4 +4,4 @@
     {
         int Experience { get; set; }
     }
-}
+}                

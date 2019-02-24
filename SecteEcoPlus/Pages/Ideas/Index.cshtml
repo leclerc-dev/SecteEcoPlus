@@ -1,0 +1,35 @@
+﻿@page
+@model SecteEcoPlus.Pages.Ideas.IndexModel
+@{
+    ViewBag.Title = "Idées";
+    var ideaButton = (new Template(@<a class="btn btn-outline-primary" asp-page="./Create">Ajouter une idée</a>).ToParameterLess());
+}
+<h1>@ViewBag.Title @ideaButton()</h1>
+<h3>Des idées pour de nouveaux produits éco+</h3>
+<hr/>
+<div class="container-fluid">
+    <h4>Idées du moment</h4>
+    <div class="row">
+        @if (Model.Ideas?.Any() ?? false)
+        {
+            foreach (var idea in Model.Ideas)
+            {
+                <div class="col-md-6 col-lg-5 col-xl-4 my-2 idea-container">
+                    <partial name="_Idea" model="@idea" />
+                </div>
+            }
+        }
+        else
+        {
+            <div class="container bg-light rounded shadow-lg p-4 my-3 border border-grey">
+                <h4>C'est bizarre...</h4>
+                <p>On dirait qu'il n'y a pas d'idées ici... Vous pouvez en mettre une si vous voulez !</p>
+                @ideaButton()
+            </div>
+        }
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/js/ideas.js"></script>
+}

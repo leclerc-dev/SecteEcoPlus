@@ -52,7 +52,7 @@ namespace SecteEcoPlus.Areas.Identity
             return await profileCol.FirstOrDefaultAsync();
         }
 
-        public override async Task<IdentityResult> DeleteAsync(SecteUser user, CancellationToken cancellationToken = new CancellationToken())
+        public override async Task<IdentityResult> DeleteAsync(SecteUser user, CancellationToken cancellationToken = default)
         {
             var a = await base.DeleteAsync(user, cancellationToken);
             _context.PublicProfiles.Remove(new PublicProfile { PublicProfileId = user.PublicProfileId });

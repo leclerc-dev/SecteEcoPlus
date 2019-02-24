@@ -1,0 +1,38 @@
+﻿@model ProductIdeaItemViewModel
+@using SecteEcoPlus.Controllers
+<div class="card idea @(Model.TotalVotes <= -2 ? "bad-idea" : "")">
+    <div class="card-body">
+        @Model.Content
+    </div>
+    <div class="card-footer small">
+        <div class="row">
+            <div class="col">
+                <div class="d-flex align-items-center h-100 my-auto">
+                    <div class="text-muted align-middle">
+                        Créée par
+                        @Html.DisplayFor(m => m.Author, "ProfileLink")<span class="d-none d-md-inline">,</span><br class="d-block d-md-none" />
+                        le @Html.DisplayTextFor(m => m.PublishDate)
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <button class="d-inline btn btn-outline-success btn-sm @(Model.VoteDirection == 1 ? "active" : "") vote"
+                        data-vote-url="@Url.Action("Upvote", "Ideas", new {id = Model.Id})" data-upvote>
+                    <span class="fa fa-arrow-up"></span>
+                </button>
+                <span class="votes-count align-middle mx-1">@Model.TotalVotes</span>
+                <button class="d-inline btn btn-outline-danger btn-sm @(Model.VoteDirection == -1 ? "active" : "") vote"
+                        data-vote-url="@Url.Action("Downvote", "Ideas", new {id = Model.Id})" data-downvote>
+                    <span class="fa fa-arrow-down"></span>
+                </button>
+                @if (Model.IsFromUser)
+                {
+                <button class="d-inline btn btn-danger btn-sm" data-delete-request-url="@Url.Action("DeleteIdea", "Ideas", new {id = Model.Id})">
+                    <span style="display: none;" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span class="fa fa-trash text-white"></span>
+                </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

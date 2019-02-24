@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <UserSecretsId>79A4104A-04BE-49A8-B919-EA4547B6E1C4</UserSecretsId>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +12,8 @@
     <Compile Remove="Migrations\20190213155637_AddedId.Designer.cs" />
     <Compile Remove="Migrations\20190213170806_Required.cs" />
     <Compile Remove="Migrations\20190213170806_Required.Designer.cs" />
+    <Compile Remove="Migrations\20190219175437_ProductIdeas.cs" />
+    <Compile Remove="Migrations\20190219175437_ProductIdeas.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,10 +35,11 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.7.0-beta2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="2.2.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.2" />
     <PackageReference Include="Sendgrid" Version="9.10.0" />
   </ItemGroup>
 

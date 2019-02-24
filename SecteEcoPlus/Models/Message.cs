@@ -21,7 +21,7 @@ namespace SecteEcoPlus.Models
         public PublicProfile Author { get; set; }
 
         [Display(Name = "Contenu")]
-        [MaxLength(420)]
+        [StringLength(420)]
         [Required]
         public string Content { get; set; }
         [Display(Name = "Date de publication")]

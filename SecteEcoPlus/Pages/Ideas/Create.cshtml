@@ -1,0 +1,30 @@
+﻿@page
+@using SecteEcoPlus.Controllers
+@model SecteEcoPlus.Pages.Ideas.CreateModel
+@{
+    ViewBag.Title = "Nouvelle idée";
+}
+
+<h1>Nouvelle idée</h1>
+<h3>Créez une nouvelle idée de produit éco+ !</h3>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6">
+            <form method="post">
+                <textarea asp-for="Input.Content" placeholder="Décrivez ici votre idée de produit pas cher" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Input.Content"></span>
+                <input type="submit" class="btn btn-success form-control my-2"/>
+            </form>
+        </div>
+        <div class="col-lg-6">
+            <h3>Conseils pour vos idées</h3>
+            <p>Mettre des idées permet de rendre la secte active et démontrer son sens de l'imagination.</p>
+            <p>Une idée c'est imaginer un nouveau produit éco+, comme un aspirateur éco+ (loul)</p>
+            <p>Vous gagnez de l'expérience lorsque quelqu'un vote pour votre idée.</p>
+            <p class="text-danger font-weight-bold">Si votre idée est trop mauvaise, elle sera supprimée.</p>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

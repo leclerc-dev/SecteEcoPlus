@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SecteEcoPlus.Areas.Identity.Data;
 using SecteEcoPlus.Models;
 using SecteEcoPlus.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SecteEcoPlus.Areas.Identity.Pages.Profile
 {
@@ -37,19 +34,19 @@ namespace SecteEcoPlus.Areas.Identity.Pages.Profile
             }
             PublicProfile profile;
             if (id is null || (profile = await _context.PublicProfiles.FindAsync(id)) is null)
-            {           
+            {
                 ViewBag.Profile = Profile = PublicProfile.NotFoundProfile;
                 return Page();
             }
-            
-            return RedirectToPage("Index", new {id, name = profile.DisplayName.AdaptToRoute()});
+
+            return RedirectToPage("Index", new { id, name = profile.DisplayName.AdaptToRoute() });
         }
         private async Task<IActionResult> GetUserPage(int id)
         {
             //var user = await _userManager.FindByIdAsync(id.ToString());
             var data = await _context.PublicProfiles
                               .AsNoTracking()
-                              .Select(p => new 
+                              .Select(p => new
                               {
                                   Profile = p,
                                   Messages = p.ReviewMessages.OrderByDescending(r => r.PublishDate).Take(10).ToArray()

@@ -71,6 +71,20 @@ footer {
     animation-fill-mode: forwards, forwards;
     animation-duration: 0.5s, 1s;
 }
+.votes-count {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.bad-idea {
+    opacity: 0.5;
+    transition: opacity 0.25s ease-in-out
+}
+.bad-idea:hover {
+    opacity: 1;
+}
+.border-grey {
+    border: rgb(216, 216, 216);
+}
 @keyframes review-posted {
     0% {
         background-color: inherit;

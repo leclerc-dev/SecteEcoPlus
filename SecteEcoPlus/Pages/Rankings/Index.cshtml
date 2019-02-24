@@ -10,7 +10,7 @@
     <div class="row">
         @foreach (var profile in Model.Rankings)
         {
-            <div class="col-md-6 col-lg-4 col-xl-3">
+            <div class="col-md-6 col-lg-4 col-xl-3 d-flex align-items-stretch">
                 <partial name="_RankingItem" model="profile" />
             </div>
         }

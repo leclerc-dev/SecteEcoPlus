@@ -42,6 +42,9 @@
                 <li class="nav-item">
                     <a asp-page="/Rankings/Index" asp-area="" class="nav-link">Classement</a>
                 </li>
+                <li class="nav-item">
+                    <a asp-page="/Ideas/Index" asp-area="" class="nav-link">Idées</a>
+                </li>
             </ul>
             <div class="my-2 my-lg-0">
                 <partial name="_LoginPartial"/>
@@ -59,13 +62,13 @@
     &copy; @DateTime.Now.Year - Secte éco+ - <a asp-page="/Privacy">Politique de confidentialité</a>
     - rendu fait en @GetStopwatchTime(renderStopwatch)
 </footer>
+<script>
+    var isSignedIn = @SignInManager.IsSignedIn(User).ToString().ToLower();
+    var signInUrl = "@Url.Page("/Account/Login", new { area = "Identity" })";
+</script>
     @if (ViewBag.UseJqueryAjax ?? false)
     {
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
-    }
-    @if (ViewBag.UseJqueryValidation ?? false)
-    {
-    <partial name="_ValidationScriptsPartial" />
     }
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"
             asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
@@ -73,10 +76,6 @@
             crossorigin="anonymous">
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @if (ViewBag.UseReviewScripts ?? false)
-    {
-    <partial name="_ReviewScriptsPartial" />
-    }
     @RenderSection("Scripts", false)
 </body>
 </html>

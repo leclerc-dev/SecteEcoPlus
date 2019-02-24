@@ -33,7 +33,7 @@ namespace SecteEcoPlus
             = CultureInfo.DefaultThreadCurrentUICulture 
             = CultureInfo.DefaultThreadCurrentCulture
             = CultureInfo.CurrentCulture
-            = CultureInfo.GetCultureInfo("fr-FR");
+            = CultureInfo.GetCultureInfo("fr-FR"); // we need all the french
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -49,9 +49,9 @@ namespace SecteEcoPlus
                 }).AddDataAnnotationsLocalization();
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = $"/Identity/Account/Login";
-                options.LogoutPath = $"/Identity/Account/Logout";
-                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+                options.LoginPath = "/Identity/Account/Login";
+                options.LogoutPath = "/Identity/Account/Logout";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
             });
             services.Configure<IdentityOptions>(options =>
             {
@@ -61,6 +61,7 @@ namespace SecteEcoPlus
                 options.Password.RequiredLength = 3;
                 options.Password.RequiredUniqueChars = 0;
             });
+            services.AddMemoryCache();
             services.AddSingleton<IEmailSender, EmailService>();
             services.AddSingleton(new Random());
         }
@@ -95,7 +96,6 @@ namespace SecteEcoPlus
             {
                 Debug.WriteLine($"Api key not found :( i cri irl for real rn srsly: {e}");
             }
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

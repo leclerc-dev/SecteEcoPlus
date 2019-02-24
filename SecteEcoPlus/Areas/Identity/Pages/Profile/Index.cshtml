@@ -3,15 +3,10 @@
 @{
     ViewBag.Title = $"Profil de {Model.Profile.DisplayName} : Vue d'ensemble";
 }
-@addTagHelper *, SecteEcoPlus
 <h4>Dernières suggestions de @Model.Profile.DisplayName</h4>
 <div class="overflow-auto h-100" id="messagesContainer">
     @foreach (var message in Model.Reviews)
     {
-        <partial name="_ReviewPartial" model="@message" />
-        
+        <partial name="_ReviewPartial" model="@message" />       
     }
 </div>
-@section Scripts { 
-    <partial name="_ReviewScriptsPartial" />
-}

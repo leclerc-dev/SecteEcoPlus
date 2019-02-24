@@ -1,0 +1,9 @@
+﻿@model SecteEcoPlus.ViewModels.IPublicProfileDisplay
+@if (Model?.Id != null)
+{
+<a asp-area="Identity" asp-page="/Profile/Index" asp-route-id="@Model.Id"><b>@Html.DisplayFor(m => m.DisplayName)</b></a>@* whitespace killer
+*@}
+else
+{
+<b>@Html.DisplayFor(m => m.DisplayName)</b>@*
+*@}

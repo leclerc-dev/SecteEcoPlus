@@ -2,28 +2,42 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using SecteEcoPlus.Experience;
 using SecteEcoPlus.Models;
+using SecteEcoPlus.ViewModels;
 
 namespace SecteEcoPlus.Areas.Identity.Data
 {
-    public class PublicProfile : ExperienceObject
+    public class PublicProfile : ExperienceObject, IPublicProfileDisplay
     {
         public static readonly PublicProfile NotFoundProfile = new PublicProfile
         {
             DisplayName = "Introuvable",
-            ReviewMessages = Enumerable.Empty<Message>().ToArray()           
+            ReviewMessages = Array.Empty<Message>()        
         };
-        public int PublicProfileId { get; set; }
 
+        [NotMapped]
+        int IPublicProfileDisplay.Id
+        {
+            get => PublicProfileId;
+            set => PublicProfileId = value;
+        }
+
+        public int PublicProfileId { get; set; }
+        [StringLength(64)]
+        [Display(Name = "Pseudonyme", ShortName = "Pseudo")]
+        [DisplayFormat(NullDisplayText = "Anonyme")]
         public string DisplayName { get; set; }
 
         [InverseProperty(nameof(Message.Author))]
         public ICollection<Message> ReviewMessages { get; set; }
+
+        public ICollection<ProductIdea> ProductIdeas { get; set; }
 
         // ---
         [JsonIgnore] // let's not show the pass on download :p

@@ -14,6 +14,10 @@ namespace SecteEcoPlus.Models
         }
         public DbSet<Message> WebsiteReviews { get; set; }
         public DbSet<PublicProfile> PublicProfiles { get; set; }
+
+        public DbSet<ProductIdea> ProductIdeas { get; set; }
+        public DbSet<ProductIdeaVote> ProductIdeaVotes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

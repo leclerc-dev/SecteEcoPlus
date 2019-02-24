@@ -13,7 +13,7 @@ namespace SecteEcoPlus.Experience
             set => SetExperience(value);
         }
 
-        public int SetExperience(int value)
+        public int SetExperience(int value, bool protectXp = true)
         {
             if (ExperienceDebt <= 0)
             {
@@ -22,15 +22,22 @@ namespace SecteEcoPlus.Experience
                 return experienceDiff;
             }
             var diff = value - _experience;
+            if (protectXp && diff < 0)
+            {
+                ExperienceDebt -= diff;
+                return 0;
+            }
             var afterDebt = ExperienceDebt - diff;
             ExperienceDebt = Math.Max(afterDebt, 0);
             var modifiedExperience = Math.Max(-afterDebt, Math.Min(diff, 0));
             _experience += modifiedExperience;
+            if (_experience < 0) _experience = 0;
             return modifiedExperience;
         }
 
-        public int AddExperience(int value) => SetExperience(Experience + value);
-        public int RemoveExperience(int value) => SetExperience(Experience - value);
+        public int AddExperience(int value) => Experience += value;
+        public int RemoveExperience(int value) => SetExperience(Math.Max(Experience - value, 0), false);
+        public int RemoveExperienceSoft(int value) => SetExperience(Experience - value);
         public int Level => GetLevel(Experience);
         public int ExperienceNeededForNextLevel => GetExperienceNeededForNextLevel(Level);
         public int ExperienceLeftForNextLevel => GetExperienceLeftForNextLevel(Level, Experience);

@@ -21,7 +21,7 @@ namespace SecteEcoPlus.Areas.Identity.Pages.Account.Manage
 
         internal static string PageNavClass(ViewContext viewContext, string page)
         {
-            var activePage = viewContext.ViewData["ActivePage"] as string
+            var activePage = viewContext.ViewBag.ActivePage as string
                 ?? System.IO.Path.GetFileNameWithoutExtension(viewContext.ActionDescriptor.DisplayName);
             return string.Equals(activePage, page, StringComparison.OrdinalIgnoreCase) ? "active" : null;
         }
